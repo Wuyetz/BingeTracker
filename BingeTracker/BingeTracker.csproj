@@ -207,9 +207,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201903291152526_init.cs" />
-    <Compile Include="Migrations\201903291152526_init.Designer.cs">
-      <DependentUpon>201903291152526_init.cs</DependentUpon>
+    <Compile Include="Migrations\201903291220274_init.cs" />
+    <Compile Include="Migrations\201903291220274_init.Designer.cs">
+      <DependentUpon>201903291220274_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -329,7 +329,6 @@
   <ItemGroup>
     <Folder Include="Helpers\" />
     <Folder Include="Uploads\" />
-    <Folder Include="Views\backupViews\" />
     <Folder Include="Views\UserView\" />
   </ItemGroup>
   <ItemGroup>
@@ -344,8 +343,8 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201903291152526_init.resx">
-      <DependentUpon>201903291152526_init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201903291220274_init.resx">
+      <DependentUpon>201903291220274_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using BingeTracker.Models;
 using Microsoft.AspNet.Identity;
@@ -16,14 +14,14 @@ namespace BingeTracker.Controllers
     {
         private MovieDBContext db = new MovieDBContext();
 
-        
+
 
         // GET: MyMovies
         public ActionResult Index(string sortOrder, string currentFilter, string currentFilter2, string Title, string Genres, int? page)
 
         {
 
-            
+
 
             var ratingList = new List<SelectListItem>();
             double gain = 0.1;
@@ -34,9 +32,7 @@ namespace BingeTracker.Controllers
                 ratingList.Add(new SelectListItem { Text = txt.ToString(), Value = txt.ToString() });
             }
             ViewBag.myRating = ratingList;
-            //ViewData["myRating"] = ratingList;
-            //List<string> RatingList = new List<string>() { "0", "1", "2", "3", "4", "5", "6", "7", "8", "8.5" };
-            //ViewBag.myRatingList = new SelectList(RatingList);
+
 
 
 
@@ -47,7 +43,7 @@ namespace BingeTracker.Controllers
             ViewBag.VotesSortParm = sortOrder == "Votes" ? "Votes_desc" : "Votes";
             ViewBag.MyRatingSortParm = sortOrder == "MyRating" ? "MyRating_desc" : "MyRating";
             ViewBag.WatchedSortParm = sortOrder == "Watched" ? "Watched_desc" : "Watched";
-            
+
 
 
             if (Title != null)
@@ -74,7 +70,8 @@ namespace BingeTracker.Controllers
 
             var userid = User.Identity.GetUserId();
 
-            var movies = from m in db.MyMovies where m.UserID == userid
+            var movies = from m in db.MyMovies
+                         where m.UserID == userid
                          select m;
             if (!string.IsNullOrEmpty(Title))
             {
@@ -85,7 +82,7 @@ namespace BingeTracker.Controllers
                 movies = movies.Where(m => m.Genres.Contains(Genres));
             }
 
-           
+
 
             switch (sortOrder)
             {
@@ -139,18 +136,18 @@ namespace BingeTracker.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-            return View(movies./*OrderBy(m => m.Title).*/ToPagedList(pageNumber, pageSize));
+            return View(movies.ToPagedList(pageNumber, pageSize));
         }
 
 
 
-        public ActionResult Remove(/*[Bind(Include = "ID = movie.ID,Genres,IdImdbImdb,Rating,ReleaseYear,Title,Votes,Note,Watched,ToBinge,UserID,MyRating")]*/ int id, string idimdb, string returnUrl)
+        public ActionResult Remove(int id, string idimdb, string returnUrl)
         {
-            //List<Movie> movies = db.Movies.ToList();
+
             MyMovie myMovie = db.MyMovies.Find(id);
             string ii = idimdb;
             Movie movie = db.Movies.Where(i => i.IdImdb == ii).FirstOrDefault();
-            //var mov = movies.Where(movie => movie.IdImdb == myMovie.IdImdb);
+
             var userid = User.Identity.GetUserId();
             var m = movie.AddedToMyMovies;
             var mm = m.Replace(userid, "");
@@ -158,48 +155,21 @@ namespace BingeTracker.Controllers
             db.MyMovies.Remove(myMovie);
             db.SaveChanges();
             return Redirect(returnUrl);
-/*
-            {
-                Movie movie = db.Movies.Find(id);
-                var userid = User.Identity.GetUserId();
-                if (movie.AddedToMyMovies.Contains(userid))
-                {
-                    var m = movie.AddedToMyMovies;
-                    var mm = m.Replace(userid, "");
-                    movie.AddedToMyMovies = mm;
-                }
-                var myMs = from mm in db.MyMovies where mm.IdImdb == movie.IdImdb select mm;
-                MyMovie myMovie = (from m in myMs where m.UserID == userid select m).First();
-                db.MyMovies.Remove(myMovie);
-                db.SaveChanges();
-                return Redirect(returnUrl);
-            }
-*/
+
         }
 
         [HttpPost]
-        public ActionResult ChangeMyRating(string myRating , int id, string returnUrl)
+        public ActionResult ChangeMyRating(string myRating, int id, string returnUrl)
         {
 
-            MyMovie myMovie = db.MyMovies.Find(id);           
+            MyMovie myMovie = db.MyMovies.Find(id);
             myMovie.MyRating = myRating;
             db.SaveChanges();
             return Redirect(returnUrl);
 
         }
 
-/*
-        public ActionResult ChangeMyNote(int id, string returnUrl)
-        {
-            MyMovie myMovie = db.MyMovies.Find(id);
 
-            ViewBag.existingNote = myMovie.Note;
-
-            return Redirect(returnUrl);
-
-
-        }
-*/
 
         [HttpPost]
         public ActionResult ChangeMyNote(string myNote, int id, string returnUrl)
@@ -213,13 +183,13 @@ namespace BingeTracker.Controllers
         }
 
 
-        
+
         public ActionResult ChangeWatched(int id, string returnUrl)
         {
 
             MyMovie myMovie = db.MyMovies.Find(id);
             if (myMovie.Watched == "yes") { myMovie.Watched = "no"; } else if (myMovie.Watched == "no") { myMovie.Watched = "yes"; }
-            
+
 
             db.SaveChanges();
             return Redirect(returnUrl);
@@ -228,23 +198,8 @@ namespace BingeTracker.Controllers
 
 
 
-        // GET: MyMovies/Note/5
-        /*       public ActionResult MyRatingList()
-               {
-
-                   var myRatingList = new List<SelectListItem>();
-                   double gain = 0.1;
-                   double txt = 0.0;
-                   for (var i = 0; i < 100; i++)
-                       txt = i * gain;
-                       myRatingList.Add(new SelectListItem { Text = txt.ToString(), Value = txt.ToString() });
-                   ViewBag.list = myRatingList;
 
 
-
-
-                   return View();
-             }*/
 
         // GET: MyMovies/Create
         public ActionResult Create()

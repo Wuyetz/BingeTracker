@@ -96,8 +96,6 @@
                            }
                        />
 
-
-
                          <input type="button" class="btn btn-info removeMovieButton" value="Remove From MyMovies" onclick="location.href='@Url.Action("RemoveFromMyMovies", "Movies", new { id = item.ID , returnUrl = Request.RawUrl })'"
                        @{ if (User.Identity.IsAuthenticated == false || !item.AddedToMyMovies.Contains(User.Identity.GetUserId()))
                            { @: disabled="disabled"
@@ -106,12 +104,9 @@
                            }
                        />
 
-
-
             </td>
         </tr>
     }
-
 
 
 </table>

@@ -13,7 +13,7 @@ namespace BingeTracker.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201903291152526_init"; }
+            get { return "201903291220274_init"; }
         }
         
         string IMigrationMetadata.Source
