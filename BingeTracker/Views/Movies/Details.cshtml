@@ -1,0 +1,58 @@
+﻿@model BingeTracker.Models.Movie
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Movie</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReleaseYear)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReleaseYear)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImdbRating)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImdbRating)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Watched)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Watched)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

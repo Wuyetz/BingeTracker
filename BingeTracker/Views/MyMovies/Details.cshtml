@@ -1,0 +1,106 @@
+﻿@model BingeTracker.Models.MyMovie
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>MyMovie</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IdImdb)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdImdb)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReleaseYear)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReleaseYear)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Genres)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Genres)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImdbRating)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImdbRating)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Votes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Votes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MyRating)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MyRating)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ToBinge)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ToBinge)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Watched)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Watched)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserID)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

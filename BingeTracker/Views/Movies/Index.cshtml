@@ -1,0 +1,122 @@
+﻿@model PagedList.IPagedList<BingeTracker.Models.Movie>
+
+
+@using PagedList.Mvc;
+@using Microsoft.AspNet.Identity
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Movies";
+}
+
+<br />
+
+<style>
+
+    .btn.btn-primary[disabled] {
+        background-color: gray;
+    }
+
+    .btn.btn-info[disabled] {
+        background-color: gray;
+    }
+</style>
+
+
+
+
+@using (Html.BeginForm("Index", "Movies", FormMethod.Get))
+{
+    <p>
+        Find by Title: @Html.TextBox("Title", ViewBag.CurrentFilter as string, new { @Value = "" })
+        Find by Genre: @Html.TextBox("Genres", ViewBag.CurrentFilter2 as string, new { @Value = "" })
+
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<p style="background-color:red;  color:white; font-weight:bold" font size="20" @{ if (User.Identity.IsAuthenticated) { @: hidden="hidden"
+   } else {  } }>>> Register / log in to start adding movies to your collection ! <<</p>
+
+<table class="table table-dark table-bordered table-striped">
+    <tr>
+
+        <th>
+            @Html.ActionLink(HttpUtility.HtmlDecode("Title &#8593;&#8595;"), "Index", new { sortOrder = ViewBag.TitleSortParm, currentFilter = ViewBag.CurrentFilter, currentFilter2 = ViewBag.CurrentFilter2 })
+        </th>
+        <th>
+            @Html.ActionLink(HttpUtility.HtmlDecode("Release Year &#8593;&#8595;"), "Index", new { sortOrder = ViewBag.ReleaseYearSortParm, currentFilter = ViewBag.CurrentFilter, currentFilter2 = ViewBag.CurrentFilter2 })
+        </th>
+        <th>
+            @Html.ActionLink(HttpUtility.HtmlDecode("Imdb Rating &#8593;&#8595;"), "Index", new { sortOrder = ViewBag.ImdbRatingSortParm, currentFilter = ViewBag.CurrentFilter, currentFilter2 = ViewBag.CurrentFilter2 })
+        </th>
+        <th>
+            @Html.ActionLink(HttpUtility.HtmlDecode("Votes &#8593;&#8595;"), "Index", new { sortOrder = ViewBag.VotesSortParm, currentFilter = ViewBag.CurrentFilter, currentFilter2 = ViewBag.CurrentFilter2 })
+        </th>
+        <th>
+            Genres
+        </th>
+        <th>
+            Imdb ID
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseYear)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImdbRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Votes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Genres)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdImdb)
+            </td>
+            <td>
+
+
+                <input type="button" class="btn btn-primary addMovieButton" value="Add To MyMovies" onclick="location.href='@Url.Action("AddToMyMovies", "Movies", new { id = item.ID, returnUrl = Request.RawUrl })'"
+                       @{ if (User.Identity.IsAuthenticated == false || item.AddedToMyMovies.Contains(User.Identity.GetUserId()))
+                           { @: disabled="disabled"
+                       }
+                               else { }
+                           }
+                       />
+
+
+
+                         <input type="button" class="btn btn-info removeMovieButton" value="Remove From MyMovies" onclick="location.href='@Url.Action("RemoveFromMyMovies", "Movies", new { id = item.ID , returnUrl = Request.RawUrl })'"
+                       @{ if (User.Identity.IsAuthenticated == false || !item.AddedToMyMovies.Contains(User.Identity.GetUserId()))
+                           { @: disabled="disabled"
+                       }
+                               else { }
+                           }
+                       />
+
+
+
+            </td>
+        </tr>
+    }
+
+
+
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page ,sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, currentFilter2 = ViewBag.CurrentFilter2 }))

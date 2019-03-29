@@ -1,0 +1,193 @@
+﻿@model PagedList.IPagedList<BingeTracker.Models.MyMovie>
+
+
+
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "MyMovies";
+}
+
+<h2>My movies</h2>
+<style>
+
+
+
+   
+
+    th,td {
+        
+        padding: 1px;
+        
+       
+    }
+
+    table {
+        table-layout: fixed;       
+    }
+
+
+    .btn.btn-primary[disabled] {
+        background-color: gray;
+    }
+
+    .btn.btn-info[disabled] {
+        background-color: gray;
+    }
+
+    
+
+</style>
+
+
+
+@using (Html.BeginForm("Index", "MyMovies", FormMethod.Get))
+{
+    <p>
+        Find by Title: @Html.TextBox("Title", ViewBag.CurrentFilter as string, new { @Value = "" })
+        Find by Genre: @Html.TextBox("Genres", ViewBag.CurrentFilter2 as string, new { @Value = "" })
+
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<table class="table table-bordered table-striped table-dark">
+    <tr>
+
+        <th style="width: 255px">
+            @Html.ActionLink(HttpUtility.HtmlDecode("Title &#8593;&#8595;"), "Index", new { sortOrder = ViewBag.TitleSortParm, currentFilter = ViewBag.CurrentFilter, currentFilter2 = ViewBag.CurrentFilter2 })
+        </th>
+        <th style="width: 82px">
+            @Html.ActionLink(HttpUtility.HtmlDecode("Released &#8593;&#8595;"), "Index", new { sortOrder = ViewBag.ReleaseYearSortParm, currentFilter = ViewBag.CurrentFilter, currentFilter2 = ViewBag.CurrentFilter2 })
+        </th>
+
+
+        <th style="width: 110px">
+            Genres
+        </th>
+        <th style="width: 100px">
+            Imdb ID
+        </th>
+        <th style="width: 82px">
+            @Html.ActionLink(HttpUtility.HtmlDecode("Votes &#8593;&#8595;"), "Index", new { sortOrder = ViewBag.VotesSortParm, currentFilter = ViewBag.CurrentFilter, currentFilter2 = ViewBag.CurrentFilter2 })
+        </th>
+        <th style="width: 75px">
+            @Html.ActionLink(HttpUtility.HtmlDecode("Imdb Rating &#8593;&#8595;"), "Index", new { sortOrder = ViewBag.ImdbRatingSortParm, currentFilter = ViewBag.CurrentFilter, currentFilter2 = ViewBag.CurrentFilter2 })
+        </th>
+        <th style="width: 75px">
+            @Html.ActionLink(HttpUtility.HtmlDecode("My Rating &#8593;&#8595;"), "Index", new { sortOrder = ViewBag.MyRatingSortParm, currentFilter = ViewBag.CurrentFilter, currentFilter2 = ViewBag.CurrentFilter2 })
+        </th>
+
+
+
+        <th style="width: 255px">
+            Note
+        </th>
+
+        <th style="width: 82px">
+            @Html.ActionLink(HttpUtility.HtmlDecode("Watched &#8593;&#8595;"), "Index", new { sortOrder = ViewBag.WatchedSortParm, currentFilter = ViewBag.CurrentFilter, currentFilter2 = ViewBag.CurrentFilter2 })
+        </th>
+
+        <th style="width: 255px"></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+
+        <td  style="word-wrap: break-word">
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReleaseYear)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.Genres)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IdImdb)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Votes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ImdbRating)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MyRating)
+
+
+
+
+            <div class="rateDiv" style="display: none">
+                @using (Html.BeginForm("ChangeMyRating", "MyMovies", new { id = item.ID, returnUrl = Request.RawUrl }))
+                {
+
+                    @Html.DropDownList("myRating", ViewBag.myRating as SelectList, "")
+
+
+                    <input type="submit" class="ratingSubmit" value="Ok" />
+
+                }
+            </div>
+        </td>
+
+
+
+        <td style="word-wrap: break-word">
+
+
+
+            @Html.DisplayFor(modelItem => item.Note, new { @style = "max-width: 215px" })
+            <br />
+
+
+            <div class="noteDiv" style="display: none">
+                @using (Html.BeginForm("ChangeMyNote", "MyMovies", new { id = item.ID, returnUrl = Request.RawUrl }))
+                {
+                    @Html.TextArea("myNote", item.Note, new { @maxlength = "60", @class = "form-control md-textarea", @style = "width: 230px; height:95px" })
+
+                    <input type="submit" class="noteSubmit" value="Ok" />
+                }
+            </div>
+
+        </td>
+
+        <td>
+
+            @if (item.Watched == "yes")
+            {
+                <input type="button" class="btn btn-primary" value=@item.Watched onclick="location.href='@Url.Action("ChangeWatched", "MyMovies", new { id = item.ID, returnUrl = Request.RawUrl })'" />
+            }
+            else
+            {
+                <input type="button" class="btn btn-info" value=@item.Watched onclick="location.href='@Url.Action("ChangeWatched", "MyMovies", new { id = item.ID, returnUrl = Request.RawUrl })'" />
+            }
+
+        </td>
+
+        <td style='white-space: nowrap'>
+
+            <button class="rateClass btn btn-primary">Rate</button>
+            <button class="noteClass btn btn-primary">Note</button>
+            <input type="button" class="btn btn-primary" value="Remove" onclick="location.href='@Url.Action("Remove", "MyMovies", new { id = item.ID, idimdb = item.IdImdb, returnUrl = Request.RawUrl })'" />
+
+            <br />
+
+        </td>
+    </tr>
+                }
+
+</table>
+
+
+
+
+
+
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page ,sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, currentFilter2 = ViewBag.CurrentFilter2 }))
